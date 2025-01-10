@@ -68,3 +68,10 @@ button {
   text-transform: uppercase;
   font-weight: bold;
 }
+.successpanel {
+  display: none;
+  margin-top: 100px;
+  color: #09b367;
+  font-weight: bold;
+  margin-bottom: 20px;
+}

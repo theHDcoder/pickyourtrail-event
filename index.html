@@ -10,6 +10,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <script
+      id="otpless-sdk"
+      src="https://otpless.com/v4/headless.js"
+      data-appid="FULFUSTI1I1YHIDDLM4S"
+    ></script>
   </head>
   <body>
     <div class="container">
@@ -28,7 +33,15 @@
         <p style="margin-top: -10px">India's Biggest</p>
         <p style="margin-bottom: 20px">Maldives Holiday Festival</p>
       </div>
-      <form>
+      <div class="successpanel" id="successpanel">
+        <h3>Success</h3>
+        <p>Your OTP has been verified successfully</p>
+      </div>
+      <div class="loader" id="loader" style="display: none">
+        <img src="loadinganim.gif" alt="" srcset="" />
+        <p style="margin-bottom: 300px">Loading...</p>
+      </div>
+      <form id="form">
         <div class="form-group">
           <input
             type="text"
@@ -52,7 +65,7 @@
         <div class="form-group">
           <input
             type="tel"
-            id="mobile"
+            id="phone"
             name="mobile"
             pattern="[0-9]{10}"
             placeholder="Mobile No"
@@ -72,24 +85,139 @@
           />
         </div>
         <div class="form-group">
-          <button type="submit">GET CODE</button>
+          <button onclick="phoneAuth()">GET CODE</button>
         </div>
         <div class="form-group verification-field">
           <input
             type="text"
-            id="verificationCode"
+            id="verification-code"
             name="verificationCode"
             placeholder="access Code"
             pattern="[0-9]*"
             inputmode="numeric"
             maxlength="6"
-            required
           />
         </div>
         <div class="form-group">
-          <button type="submit">VERIFY</button>
+          <button onclick="verifyOTP()">VERIFY</button>
         </div>
       </form>
     </div>
+    <script>
+      const callback = (eventCallback) => {
+        // console.log({eventCallback});
+
+        const ONETAP = () => {
+          const { response } = eventCallback;
+          const token = response.token;
+          if (response.status === "SUCCESS") {
+            console.log("OTP verified successfully");
+            const formData = new FormData();
+            formData.append("name", document.getElementById("name").value);
+            formData.append("email", document.getElementById("email").value);
+            formData.append("mobile", document.getElementById("phone").value);
+            formData.append("dob", document.getElementById("dob").value);
+
+            fetch(
+              "https://script.google.com/macros/s/AKfycbyCZHcK8K_1-U7xN1XqJp-48cQwnyDekQ78T4Hdlq3KW5TgNPSlKwdWTKPJpLrHb0fA4g/exec",
+              {
+                method: "POST",
+                body: formData,
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.result === "success") {
+                  console.log("Data submitted successfully");
+                  document.getElementById("loader").style.display = "none";
+                  document.getElementById("form").style.display = "none";
+                  document.getElementById("successpanel").style.display =
+                    "block";
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          }
+          console.log({
+            response,
+            token: response.token,
+          });
+        };
+
+        const OTP_AUTO_READ = () => {
+          const {
+            response: { otp },
+          } = eventCallback;
+          // Auto-read OTP value
+          //console.log(otp);
+        };
+
+        const FAILED = () => {
+          const { response } = eventCallback;
+          document.getElementById("loader").style.display = "none";
+          document.getElementById("form").style.display = "block";
+          console.log({
+            response,
+          });
+        };
+
+        const FALLBACK_TRIGGERED = () => {
+          const { response } = eventCallback;
+          document.getElementById("loader").style.display = "none";
+          document.getElementById("form").style.display = "block";
+          console.log({
+            response,
+          });
+        };
+
+        const EVENTS_MAP = {
+          ONETAP,
+          OTP_AUTO_READ,
+          FAILED,
+          FALLBACK_TRIGGERED,
+        };
+
+        if ("responseType" in eventCallback)
+          EVENTS_MAP[eventCallback.responseType]();
+      };
+      // Initialize OTPLESS SDK with the defined callback.
+      const OTPlessSignin = new OTPless(callback);
+
+      function phoneAuth() {
+        event.preventDefault();
+        if (!OTPlessSignin) {
+          console.error("OTPless not initialized yet");
+          return;
+        }
+        OTPlessSignin.initiate({
+          channel: "PHONE",
+          phone: document.getElementById("phone").value,
+          countryCode: "+91",
+        });
+        document.getElementById("phone-section").style.display = "none";
+        document.getElementById("code-section").style.display = "block";
+      }
+
+      function verifyOTP() {
+        event.preventDefault();
+        if (!OTPlessSignin) {
+          console.error("OTPless not initialized yet");
+          return;
+        }
+        if (document.getElementById("phone").value === "") {
+          console.error("Enter OTP");
+          return;
+        }
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("form").style.display = "none";
+        OTPlessSignin.verify({
+          channel: "PHONE",
+          phone: document.getElementById("phone").value,
+          otp: document.getElementById("verification-code").value,
+          countryCode: "+91",
+        });
+      }
+    </script>
   </body>
 </html>

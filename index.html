@@ -154,7 +154,7 @@
             response: { otp },
           } = eventCallback;
           // Auto-read OTP value
-          //console.log(otp);
+          document.getElementById("verification-code").value = otp;
         };
 
         const FAILED = () => {

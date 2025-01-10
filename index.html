@@ -87,6 +87,10 @@
         <div class="form-group">
           <button onclick="phoneAuth()">GET CODE</button>
         </div>
+        <p id="otp-message" style="display: none">
+          OTP has been sent to your mobile number.<br />
+          Enter the same below to verify.
+        </p>
         <div class="form-group verification-field">
           <input
             type="text"
@@ -195,6 +199,7 @@
           phone: document.getElementById("phone").value,
           countryCode: "+91",
         });
+        document.getElementById("otp-message").style.display = "block";
       }
 
       function verifyOTP() {

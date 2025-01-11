@@ -80,13 +80,14 @@
 
         <div class="form-group">
           <input
-            type="date"
+            type="text"
             id="dob"
             name="dob"
             required
             placeholder="DOB"
+            onfocus="(this.type='date')"
+            onblur="if(!this.value)this.type='text'"
             min="1960-01-01"
-            onblur="(this.type='text')"
             max="1998-12-31"
           />
         </div>

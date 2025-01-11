@@ -13,11 +13,6 @@
       href="https://fonts.googleapis.com/css?family=Manrope"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="style.css" />
     <script
       id="otpless-sdk"
@@ -85,7 +80,9 @@
         </div>
 
         <div class="form-group">
+          <label for="dob">DOB: &nbsp</label>
           <input
+            style="width: 50%; font-weight: bold"
             type="date"
             id="dob"
             name="dob"
@@ -119,8 +116,6 @@
       </form>
     </div>
     <script>
-      $("#dob").flatpickr(optional_config);
-
       const callback = (eventCallback) => {
         // console.log({eventCallback});
 

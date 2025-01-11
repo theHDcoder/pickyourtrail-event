@@ -13,6 +13,11 @@
       href="https://fonts.googleapis.com/css?family=Manrope"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="style.css" />
     <script
       id="otpless-sdk"
@@ -85,6 +90,7 @@
             name="dob"
             required
             placeholder="DOB"
+            onblur="if(!this.value)this.type='text'"
             min="1960-01-01"
             max="1998-12-31"
           />

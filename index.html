@@ -24,6 +24,7 @@
       src="https://otpless.com/v4/headless.js"
       data-appid="FULFUSTI1I1YHIDDLM4S"
     ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -90,7 +91,6 @@
             name="dob"
             required
             placeholder="DOB"
-            onblur="if(!this.value)this.type='text'"
             min="1960-01-01"
             max="1998-12-31"
           />
@@ -119,6 +119,8 @@
       </form>
     </div>
     <script>
+      $("#dob").flatpickr(optional_config);
+
       const callback = (eventCallback) => {
         // console.log({eventCallback});
 
